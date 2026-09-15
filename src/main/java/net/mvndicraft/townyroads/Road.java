@@ -379,6 +379,10 @@ public class Road extends TownyObject {
      */
     public boolean isAPlayerOfTheRoad(Player player) {
         Town town = TownyAPI.getInstance().getTown(player);
+        if (town == null || town.isRuined()
+                || (!TownyRoadsSettings.getRoadsPermissionOccupiedTownCanInteractWithRoad() && town.isConquered())) {
+            return false;
+        }
         Nation nation = town.getNationOrNull();
         return towns.contains(town)
                 || (nation != null && towns.stream().anyMatch(t -> nation.equals(t.getNationOrNull())));

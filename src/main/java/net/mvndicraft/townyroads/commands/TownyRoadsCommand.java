@@ -270,11 +270,11 @@ public class TownyRoadsCommand extends BaseCommand {
                 roadNotFound(commandSender, roadName);
                 return;
             }
-            if (!road.isAPlayerOfTheRoad(player)) {
-                Messaging.sendError(commandSender, "err_not_in_road_towns");
+            if (TownyUtil.ruinedOrOccupiedTown(commandSender)) {
                 return;
             }
-            if (TownyUtil.ruinedOrOccupiedTown(commandSender)) {
+            if (!road.isAPlayerOfTheRoad(player)) {
+                Messaging.sendError(commandSender, "err_not_in_road_towns");
                 return;
             }
             if (road.isBlocked()) {
@@ -317,11 +317,11 @@ public class TownyRoadsCommand extends BaseCommand {
                 notInRoad(commandSender);
                 return;
             }
-            if (!road.isAPlayerOfTheRoad(player)) {
-                Messaging.sendError(commandSender, "err_not_in_road_towns");
+            if (TownyUtil.ruinedOrOccupiedTown(commandSender)) {
                 return;
             }
-            if (TownyUtil.ruinedOrOccupiedTown(commandSender)) {
+            if (!road.isAPlayerOfTheRoad(player)) {
+                Messaging.sendError(commandSender, "err_not_in_road_towns");
                 return;
             }
             if (road.isBlocked()) {
