@@ -2,6 +2,7 @@ package net.mvndicraft.townyroads;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
+import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownyObject;
 import java.io.File;
@@ -374,11 +375,13 @@ public class Road extends TownyObject {
         return chunksCoordsSize() < maxChunksCoordsSize();
     }
     /**
-     * @return true if the player town is part of the road
+     * @return true if the player town is part of the road or one of the player nation towns is part of the road
      */
     public boolean isAPlayerOfTheRoad(Player player) {
         Town town = TownyAPI.getInstance().getTown(player);
-        return towns.contains(town);
+        Nation nation = town.getNationOrNull();
+        return towns.contains(town)
+                || (nation != null && towns.stream().anyMatch(t -> nation.equals(t.getNationOrNull())));
     }
     /**
      * @return true if the player town is a town that haven't accepted the road yet and the player has the permission to

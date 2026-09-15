@@ -204,6 +204,7 @@ public class TownyRoadsCommand extends BaseCommand {
                 return;
             }
 
+            // A player might be able to deny for several towns of his nation at the same time.
             List<Town> acceptableTowns = RoadPermissionHandler.getAcceptableTowns(player, road);
             if (!acceptableTowns.isEmpty()) {
                 acceptableTowns.forEach(road::deny);
@@ -231,7 +232,7 @@ public class TownyRoadsCommand extends BaseCommand {
             if (TownyUtil.ruinedOrOccupiedTown(commandSender, playerTown)) {
                 return;
             }
-            if (road.getTownsView().stream().noneMatch(playerTown::equals)) {
+            if (!road.isAPlayerOfTheRoad(player)) {
                 Messaging.sendError(commandSender, "err_not_in_road_towns");
                 return;
             }
@@ -353,6 +354,16 @@ public class TownyRoadsCommand extends BaseCommand {
                     Argument.component("road", Component.text(road.getName()))));
             return;
         }
+        if (commandSender instanceof Player player) {
+            if (!road.isAPlayerOfTheRoad(player)) {
+                Messaging.sendError(commandSender, "err_not_in_road_towns");
+                return;
+            }
+        } else {
+            Messaging.sendError(commandSender, "err_no_permission_to_validate_road");
+            return;
+        }
+
         Optional<Component> error = road.validate();
         if (error.isPresent()) {
             Messaging.sendError(commandSender, Component
@@ -391,7 +402,7 @@ public class TownyRoadsCommand extends BaseCommand {
             if (TownyUtil.ruinedOrOccupiedTown(commandSender)) {
                 return;
             }
-            // TODO if 2 roads of the player nation, allow the merge
+
             if (!road1.isAPlayerOfTheRoad(player) || !road2.isAPlayerOfTheRoad(player)) {
                 Messaging.sendError(commandSender, "err_not_in_both_roads");
                 return;

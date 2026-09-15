@@ -1,5 +1,7 @@
 # 1.1.1
 - Occupied towns can't interact with roads (configurable)
+- Players in a nation can build any roads as long as one of the nation towns is part of the road
+- Players in a nation can run /tr commands for other towns except create as long as one of the nation towns is part of the road
 
 # 1.1.0
 - Add different color for valid, blocked & invalid roads on the dynmap #7
