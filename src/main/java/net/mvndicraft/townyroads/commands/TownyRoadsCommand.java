@@ -198,6 +198,11 @@ public class TownyRoadsCommand extends BaseCommand {
                 roadNotFound(commandSender, roadName);
                 return;
             }
+            if (road.isBlocked()) {
+                Messaging.sendError(commandSender, Component.translatable("err_road_blocked",
+                        Argument.component("road", Component.text(road.getName()))));
+                return;
+            }
 
             List<Town> acceptableTowns = RoadPermissionHandler.getAcceptableTowns(player, road);
             if (!acceptableTowns.isEmpty()) {
