@@ -1,4 +1,4 @@
-# 1.1.1
+# 1.2.0
 - Occupied towns can't interact with roads (configurable)
 - Players in a nation can build any roads as long as one of the nation towns is part of the road
 - Players in a nation can run /tr commands for other towns except create as long as one of the nation towns is part of the road

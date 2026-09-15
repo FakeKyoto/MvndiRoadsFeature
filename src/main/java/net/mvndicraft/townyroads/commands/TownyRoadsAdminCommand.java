@@ -17,6 +17,7 @@ import net.mvndicraft.townyroads.Road;
 import net.mvndicraft.townyroads.TownyRoadsPlugin;
 import net.mvndicraft.townyroads.util.Messaging;
 import net.mvndicraft.townyroads.util.TownyUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,16 +40,16 @@ public class TownyRoadsAdminCommand extends BaseCommand {
     @Subcommand("list")
     @Description("List roads that a player is part of")
     @Syntax("<page_number> <player>")
-    public static void onList(CommandSender commandSender, int page, Player player) {
+    public static void onList(CommandSender commandSender, int page, String playerName) {
         Messaging.sendMessage(commandSender,
-                TownyRoadsPlugin.getInstance().getRoadManager().listRoad(page, true, player));
+                TownyRoadsPlugin.getInstance().getRoadManager().listRoad(page, true, Bukkit.getPlayer(playerName)));
     }
 
     @Subcommand("list")
     @Description("List roads that a player is part of")
     @Syntax("<page_number> <player>")
-    public static void onList(CommandSender commandSender, Player player) {
-        onList(commandSender, 1, player);
+    public static void onList(CommandSender commandSender, String playerName) {
+        onList(commandSender, 1, playerName);
     }
 
     @Subcommand("create")
