@@ -26,6 +26,7 @@ import net.kyori.adventure.text.minimessage.translation.Argument;
 import net.mvndicraft.townyroads.permissions.RoadPermissionHandler;
 import net.mvndicraft.townyroads.settings.TownyRoadsSettings;
 import net.mvndicraft.townyroads.util.ChunkCoordUtil;
+import net.mvndicraft.townyroads.util.TownyUtil;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -378,11 +379,10 @@ public class Road extends TownyObject {
      * @return true if the player town is part of the road or one of the player nation towns is part of the road
      */
     public boolean isAPlayerOfTheRoad(Player player) {
-        Town town = TownyAPI.getInstance().getTown(player);
-        if (town == null || town.isRuined()
-                || (!TownyRoadsSettings.getRoadsPermissionOccupiedTownCanInteractWithRoad() && town.isConquered())) {
+        if (TownyUtil.ruinedOrOccupiedTownWithoutWarning(player)) {
             return false;
         }
+        Town town = TownyAPI.getInstance().getTown(player);
         Nation nation = town.getNationOrNull();
         return towns.contains(town)
                 || (nation != null && towns.stream().anyMatch(t -> nation.equals(t.getNationOrNull())));

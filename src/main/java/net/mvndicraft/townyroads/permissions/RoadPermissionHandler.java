@@ -9,7 +9,6 @@ import java.util.List;
 import net.mvndicraft.townyroads.Road;
 import net.mvndicraft.townyroads.TownyRoadsPlugin;
 import net.mvndicraft.townyroads.settings.TownyRoadsSettings;
-import net.mvndicraft.townyroads.util.TownyUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -46,7 +45,7 @@ public class RoadPermissionHandler {
         if (location != null && location.getY() < TownyRoadsSettings.getMinY()) {
             return true;
         }
-        if (road.isAPlayerOfTheRoad(player) && !TownyUtil.ruinedOrOccupiedTown(player)) {
+        if (road.isAPlayerOfTheRoad(player)) {
             // true if the player has the permission
             return permissionSource.testPermission(player, permissionNode.getNode());
         }

@@ -53,7 +53,7 @@ public class TownyRoadCommandCompleter {
 
         manager.getCommandCompletions().registerAsyncCompletion("acceptable_road", c -> {
             CommandSender commandSender = c.getContextValue(CommandSender.class, 0);
-            if (commandSender instanceof Player player && !TownyUtil.ruinedOrOccupiedTown(player)) {
+            if (commandSender instanceof Player player && !TownyUtil.ruinedOrOccupiedTownWithoutWarning(player)) {
                 return TownyRoadsPlugin.getInstance().getRoadManager().getAcceptableRoad().stream()
                         .filter(road -> RoadPermissionHandler.canAcceptTheRoad(player, road)).map(Road::getName)
                         .toList();

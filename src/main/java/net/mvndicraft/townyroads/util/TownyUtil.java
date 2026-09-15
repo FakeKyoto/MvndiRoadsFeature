@@ -80,4 +80,15 @@ public class TownyUtil {
         }
     }
 
+    public static boolean ruinedOrOccupiedTownWithoutWarning(CommandSender commandSender) {
+        if (commandSender instanceof Player player) {
+            Town playerTown = TownyAPI.getInstance().getTown(player);
+            return playerTown == null || playerTown.isRuined()
+                    || (!TownyRoadsSettings.getRoadsPermissionOccupiedTownCanInteractWithRoad()
+                            && playerTown.isConquered());
+        } else {
+            return true;
+        }
+    }
+
 }
