@@ -1,3 +1,6 @@
+# 1.1.1
+- Occupied towns can't interact with roads (configurable)
+
 # 1.1.0
 - Add different color for valid, blocked & invalid roads on the dynmap #7
 - Improve can't build in road message

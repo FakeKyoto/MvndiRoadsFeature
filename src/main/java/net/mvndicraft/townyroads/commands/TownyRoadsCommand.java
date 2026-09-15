@@ -90,8 +90,7 @@ public class TownyRoadsCommand extends BaseCommand {
     public static void onCreate(CommandSender commandSender, String townName2) {
         if (commandSender instanceof Player player) {
             Town playerTown = TownyAPI.getInstance().getTown(player);
-            if (playerTown == null || playerTown.isRuined()) {
-                notInTown(commandSender);
+            if (TownyUtil.ruinedOrOccupiedTown(commandSender, playerTown)) {
                 return;
             }
             Town town2 = TownyUtil.getTownFromNameOrNull(commandSender, townName2);
@@ -161,8 +160,7 @@ public class TownyRoadsCommand extends BaseCommand {
     public static void onAccept(CommandSender commandSender, String roadName) {
         if (commandSender instanceof Player player) {
             Town playerTown = TownyAPI.getInstance().getTown(player);
-            if (playerTown == null || playerTown.isRuined()) {
-                notInTown(commandSender);
+            if (TownyUtil.ruinedOrOccupiedTown(commandSender, playerTown)) {
                 return;
             }
             Road road = TownyUtil.getRoadFromNameOrUUIDOrNull(commandSender, roadName);
@@ -192,8 +190,7 @@ public class TownyRoadsCommand extends BaseCommand {
     public static void onDeny(CommandSender commandSender, String roadName) {
         if (commandSender instanceof Player player) {
             Town playerTown = TownyAPI.getInstance().getTown(player);
-            if (playerTown == null || playerTown.isRuined()) {
-                notInTown(commandSender);
+            if (TownyUtil.ruinedOrOccupiedTown(commandSender, playerTown)) {
                 return;
             }
             Road road = TownyUtil.getRoadFromNameOrUUIDOrNull(commandSender, roadName);
@@ -226,8 +223,7 @@ public class TownyRoadsCommand extends BaseCommand {
         }
         if (commandSender instanceof Player player) {
             Town playerTown = TownyAPI.getInstance().getTown(player);
-            if (playerTown == null || playerTown.isRuined()) {
-                notInTown(commandSender);
+            if (TownyUtil.ruinedOrOccupiedTown(commandSender, playerTown)) {
                 return;
             }
             if (road.getTownsView().stream().noneMatch(playerTown::equals)) {
@@ -258,6 +254,9 @@ public class TownyRoadsCommand extends BaseCommand {
             }
             if (!road.isAPlayerOfTheRoad(player)) {
                 Messaging.sendError(commandSender, "err_not_in_road_towns");
+                return;
+            }
+            if (TownyUtil.ruinedOrOccupiedTown(commandSender)) {
                 return;
             }
             if (road.isBlocked()) {
@@ -304,6 +303,9 @@ public class TownyRoadsCommand extends BaseCommand {
                 Messaging.sendError(commandSender, "err_not_in_road_towns");
                 return;
             }
+            if (TownyUtil.ruinedOrOccupiedTown(commandSender)) {
+                return;
+            }
             if (road.isBlocked()) {
                 Messaging.sendError(commandSender, Component.translatable("err_road_blocked",
                         Argument.component("road", Component.text(road.getName()))));
@@ -336,6 +338,9 @@ public class TownyRoadsCommand extends BaseCommand {
         if (!TownyUniverse.getInstance().getPermissionSource().testPermission(commandSender,
                 TownyRoadsPermissionNodes.TOWNYROADS_VALIDATE.getNode())) {
             Messaging.sendError(commandSender, "err_no_permission_to_validate_road");
+            return;
+        }
+        if (TownyUtil.ruinedOrOccupiedTown(commandSender)) {
             return;
         }
         if (road.isBlocked()) {
@@ -378,6 +383,10 @@ public class TownyRoadsCommand extends BaseCommand {
                 return;
             }
 
+            if (TownyUtil.ruinedOrOccupiedTown(commandSender)) {
+                return;
+            }
+            // TODO if 2 roads of the player nation, allow the merge
             if (!road1.isAPlayerOfTheRoad(player) || !road2.isAPlayerOfTheRoad(player)) {
                 Messaging.sendError(commandSender, "err_not_in_both_roads");
                 return;
@@ -400,10 +409,6 @@ public class TownyRoadsCommand extends BaseCommand {
 
     public static void notAPlayer(CommandSender commandSender) {
         Messaging.sendError(commandSender, "err_command_sender_not_a_player");
-    }
-
-    public static void notInTown(CommandSender commandSender) {
-        Messaging.sendError(commandSender, "err_player_not_in_town");
     }
 
     public static void notInRoad(CommandSender commandSender) {

@@ -277,6 +277,13 @@ public enum ConfigNodes {
         "",
         "# If enabled, kings and co-kings can accept roads for towns in their nation.",
         "# Disabled with value of false"),
+    ROAD_PERMISSION_OCCUPIED_TOWN_CAN_INTERACT_WITH_ROAD(
+        "roads.permission.occupied_town_can_interact_with_road",
+        "false",
+        "",
+        "# If enabled, a player in an occupied town can interact with a road.",
+        "# Only works well if the 2 above options are enabled.",
+        "# Disabled with value of false"),
     ROADS_OTHER(
             "roads.other",
             "",

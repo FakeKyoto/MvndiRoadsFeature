@@ -124,6 +124,9 @@ public class TownyRoadsSettings {
     public static boolean getRoadsPermissionNationLeadersCanAccept() {
         return Settings.getBoolean(ConfigNodes.ROADS_PERMISSION_NATION_LEADERS_CAN_ACCEPT);
     }
+    public static boolean getRoadsPermissionOccupiedTownCanInteractWithRoad() {
+        return Settings.getBoolean(ConfigNodes.ROAD_PERMISSION_OCCUPIED_TOWN_CAN_INTERACT_WITH_ROAD);
+    }
 
     public static int getMinY() {
         return Settings.getInt(ConfigNodes.ROADS_OTHER_MIN_Y);
