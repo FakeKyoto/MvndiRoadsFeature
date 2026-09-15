@@ -71,8 +71,14 @@ public class TownyRoadsCommand extends BaseCommand {
     @Description("List roads")
     @Syntax("<page_number>")
     public static void onList(CommandSender commandSender, int page) {
-        Messaging.sendMessage(commandSender,
-                TownyRoadsPlugin.getInstance().getRoadManager().listRoad(page, isAdmin(commandSender)));
+        onList(commandSender, page, false);
+    }
+    @Subcommand("list")
+    @Description("List roads")
+    @Syntax("<page_number>")
+    public static void onList(CommandSender commandSender, int page, boolean onlyAccessible) {
+        Messaging.sendMessage(commandSender, TownyRoadsPlugin.getInstance().getRoadManager().listRoad(page,
+                isAdmin(commandSender), onlyAccessible ? commandSender : null));
     }
 
     @Subcommand("list")
@@ -80,6 +86,12 @@ public class TownyRoadsCommand extends BaseCommand {
     @Syntax("<page_number>")
     public static void onList(CommandSender commandSender) {
         onList(commandSender, 1);
+    }
+    @Subcommand("list")
+    @Description("List roads")
+    @Syntax("<page_number>")
+    public static void onList(CommandSender commandSender, boolean onlyAccessible) {
+        onList(commandSender, 1, onlyAccessible);
     }
 
 
@@ -377,7 +389,7 @@ public class TownyRoadsCommand extends BaseCommand {
 
     @Subcommand("merge")
     @Description("Merge 2 roads")
-    @CommandCompletion("@road_player_town_is_in @road @empty")
+    @CommandCompletion("@road_player_town_is_in @road_player_town_is_in @empty")
     @Syntax("<road> <road>")
     public static void onMerge(CommandSender commandSender, String roadName1, String roadName2) {
         if (commandSender instanceof Player player) {

@@ -20,6 +20,7 @@ import net.mvndicraft.townyroads.util.Messaging;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -104,10 +105,18 @@ public class RoadManager {
         }
     }
 
-    public Component listRoad(int page, boolean isAdmin) {
+    public Component listRoad(int page, boolean isAdmin, CommandSender onlyAccessibleToCommandSender) {
+        Player onlyAccessibleToPlayer;
+        if (onlyAccessibleToCommandSender != null && onlyAccessibleToCommandSender instanceof Player player) {
+            onlyAccessibleToPlayer = player;
+        } else {
+            onlyAccessibleToPlayer = null;
+        }
+
         Component builder = Messaging.translate("roads_list").append(Component.translatable((":"))).appendNewline();
         long itemsToSkip = Math.max(page - 1L, 0L) * 10L;
         List<Component> roadDescriptions = roads.stream()
+                .filter(road -> onlyAccessibleToPlayer == null || road.isAPlayerOfTheRoad(onlyAccessibleToPlayer))
                 .sorted(Comparator.comparing(Road::getName, String.CASE_INSENSITIVE_ORDER)).skip(itemsToSkip).limit(10)
                 .map(road -> road.getDescription(isAdmin)).toList();
         for (Component roadDescription : roadDescriptions) {

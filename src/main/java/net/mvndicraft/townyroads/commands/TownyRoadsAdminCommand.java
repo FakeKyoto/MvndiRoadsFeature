@@ -36,6 +36,21 @@ public class TownyRoadsAdminCommand extends BaseCommand {
         TownyRoadsPlugin.getInstance().reloadConfig();
     }
 
+    @Subcommand("list")
+    @Description("List roads that a player is part of")
+    @Syntax("<page_number> <player>")
+    public static void onList(CommandSender commandSender, int page, Player player) {
+        Messaging.sendMessage(commandSender,
+                TownyRoadsPlugin.getInstance().getRoadManager().listRoad(page, true, player));
+    }
+
+    @Subcommand("list")
+    @Description("List roads that a player is part of")
+    @Syntax("<page_number> <player>")
+    public static void onList(CommandSender commandSender, Player player) {
+        onList(commandSender, 1, player);
+    }
+
     @Subcommand("create")
     @Description("Create a road")
     @CommandCompletion("@reachable_road_towns @reachable_road_towns @empty")
@@ -156,6 +171,19 @@ public class TownyRoadsAdminCommand extends BaseCommand {
     @Syntax("<road> <force>")
     public static void onValidate(CommandSender commandSender, String roadName) {
         onValidate(commandSender, roadName, false);
+    }
+
+    @Subcommand("unvalidate")
+    @Description("Unvalidate a road")
+    @CommandCompletion("@road @empty")
+    @Syntax("<road>")
+    public static void onuNValidate(CommandSender commandSender, String roadName) {
+        Road road = TownyUtil.getRoadFromNameOrUUIDOrNull(commandSender, roadName);
+        if (road == null)
+            return;
+
+        road.unvalidate();
+        commandSender.sendMessage("Road " + road.getName() + " have been unvalidated.");
     }
 
     @Subcommand("merge")

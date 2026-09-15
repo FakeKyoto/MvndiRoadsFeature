@@ -12,6 +12,7 @@ import net.mvndicraft.townyroads.Road;
 import net.mvndicraft.townyroads.TownyRoadsPlugin;
 import net.mvndicraft.townyroads.permissions.RoadPermissionHandler;
 import net.mvndicraft.townyroads.permissions.TownyRoadsPermissionNodes;
+import net.mvndicraft.townyroads.util.TownyUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -52,7 +53,7 @@ public class TownyRoadCommandCompleter {
 
         manager.getCommandCompletions().registerAsyncCompletion("acceptable_road", c -> {
             CommandSender commandSender = c.getContextValue(CommandSender.class, 0);
-            if (commandSender instanceof Player player) {
+            if (commandSender instanceof Player player && !TownyUtil.ruinedOrOccupiedTown(player)) {
                 return TownyRoadsPlugin.getInstance().getRoadManager().getAcceptableRoad().stream()
                         .filter(road -> RoadPermissionHandler.canAcceptTheRoad(player, road)).map(Road::getName)
                         .toList();
@@ -78,11 +79,8 @@ public class TownyRoadCommandCompleter {
         manager.getCommandCompletions().registerAsyncCompletion("road_player_town_is_in", c -> {
             CommandSender commandSender = c.getContextValue(CommandSender.class, 0);
             if (commandSender instanceof Player player) {
-                Town playerTown = TownyAPI.getInstance().getTown(player);
-                if (playerTown != null) {
-                    return TownyRoadsPlugin.getInstance().getRoadManager().getRoadsByTown(playerTown).stream()
-                            .map(Road::getName).toList();
-                }
+                return TownyRoadsPlugin.getInstance().getRoadManager().getRoads().stream()
+                        .filter(r -> r.isAPlayerOfTheRoad(player)).map(Road::getName).toList();
             }
             return List.of();
         });
