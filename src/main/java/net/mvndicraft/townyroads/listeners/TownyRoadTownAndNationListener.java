@@ -7,6 +7,7 @@ import com.palmergames.bukkit.towny.event.PreDeleteTownEvent;
 import com.palmergames.bukkit.towny.event.TownClaimEvent;
 import com.palmergames.bukkit.towny.event.TownUpkeepCalculationEvent;
 import com.palmergames.bukkit.towny.event.town.TownRuinedEvent;
+import com.palmergames.bukkit.towny.event.town.TownUnclaimEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Town;
 import java.util.Collection;
@@ -56,6 +57,18 @@ public class TownyRoadTownAndNationListener implements Listener {
             boolean wasValid = road.isValid();
             TownyRoadsPlugin.getInstance().getRoadManager().unclaimRoad(road, chunkCoord);
             if (wasValid) {
+                road.validate();
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onTownUnclaimEvent(TownUnclaimEvent event) {
+        // for the next by chunks revalidate the valid roads.
+        ChunkCoord chunkCoord = ChunkCoord.from(event.getWorldCoord());
+        for (ChunkCoord coord : chunkCoord.getNearby(1)) {
+            Road road = TownyRoadsPlugin.getInstance().getRoadManager().getRoadAt(coord);
+            if (road != null && road.isValid()) {
                 road.validate();
             }
         }

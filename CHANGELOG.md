@@ -4,6 +4,7 @@
 - Players in a nation can run /tr commands for other towns except create as long as one of the nation towns is part of the road
 - New admin command to list roads accessible by a player
 - A valid road will stay valid when a town overclaim it if it haven't been cut in 2 parts
+- Unclaiming near a road force it to revalidate
 
 # 1.1.0
 - Add different color for valid, blocked & invalid roads on the dynmap #7
