@@ -53,7 +53,11 @@ public class TownyRoadTownAndNationListener implements Listener {
         ChunkCoord chunkCoord = ChunkCoord.from(event.getTownBlock().getWorldCoord());
         Road road = TownyRoadsPlugin.getInstance().getRoadManager().getRoadAt(chunkCoord);
         if (road != null) {
+            boolean wasValid = road.isValid();
             TownyRoadsPlugin.getInstance().getRoadManager().unclaimRoad(road, chunkCoord);
+            if (wasValid) {
+                road.validate();
+            }
         }
     }
 
