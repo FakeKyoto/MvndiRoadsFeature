@@ -1,3 +1,6 @@
+# 1.2.1
+- Add a convenient function to test if a road and a town are connected to the API
+
 # 1.2.0
 - Occupied towns can't interact with roads (configurable)
 - Players in a nation can build any roads as long as one of the nation towns is part of the road

@@ -280,6 +280,10 @@ public class RoadManager {
         return countConnected(town1, List.of(town2)) > 0;
     }
 
+    public boolean areConnected(Town town, Road road) {
+        return road.isValid() && !road.isBlocked() && areConnected(town, road.getTownsView().getFirst());
+    }
+
     public int countConnected(Town town, Collection<Town> towns) {
         if (towns.isEmpty()) {
             return 0;
