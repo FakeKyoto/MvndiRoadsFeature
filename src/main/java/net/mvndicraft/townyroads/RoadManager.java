@@ -81,19 +81,26 @@ public class RoadManager {
         return claimRoad(road, chunkCoordToClaim, null);
     }
     public boolean claimRoad(Road road, ChunkCoord chunkCoordToClaim, Player player) {
+        TownyRoadsPlugin.info("claimRoad(3-arg): road=" + road.getName()
+            + " chunk=" + chunkCoordToClaim + " player=" + (player != null ? player.getName() : "null"));
         if (road.isValid()) {
             road.unvalidate();
         }
         ChunkCoord chunkCoord = road.claim(chunkCoordToClaim);
+        TownyRoadsPlugin.info("claimRoad: road.claim returned " + chunkCoord);
 
         if (chunkCoord != null) {
             fastAccessRoads.put(chunkCoord, road);
             if (player != null) {
+                TownyRoadsPlugin.info("claimRoad: calling RoadClaimEffect");
                 net.mvndicraft.townyroads.util.RoadClaimEffect.playClaimEffect(player,
                     chunkCoord.toWorldCoord(), road);
+            } else {
+                TownyRoadsPlugin.info("claimRoad: player is null, skipping effect");
             }
             return true;
         }
+        TownyRoadsPlugin.info("claimRoad: chunkCoord is null, claim failed");
         return false;
     }
 
