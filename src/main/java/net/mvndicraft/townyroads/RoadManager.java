@@ -75,10 +75,12 @@ public class RoadManager {
             Messaging.sendMessage(player, Component.translatable("info_road_need_to_be_revalidated",
                     Argument.component("road", Component.text(road.getName()))));
         }
-        return claimRoad(road, ChunkCoord.from(player.getLocation()));
+        return claimRoad(road, ChunkCoord.from(player.getLocation()), player);
     }
-
     public boolean claimRoad(Road road, ChunkCoord chunkCoordToClaim) {
+        return claimRoad(road, chunkCoordToClaim, null);
+    }
+    public boolean claimRoad(Road road, ChunkCoord chunkCoordToClaim, Player player) {
         if (road.isValid()) {
             road.unvalidate();
         }
@@ -86,6 +88,10 @@ public class RoadManager {
 
         if (chunkCoord != null) {
             fastAccessRoads.put(chunkCoord, road);
+            if (player != null) {
+                net.mvndicraft.townyroads.util.RoadClaimEffect.playClaimEffect(player,
+                    chunkCoord.toWorldCoord(), road);
+            }
             return true;
         }
         return false;
