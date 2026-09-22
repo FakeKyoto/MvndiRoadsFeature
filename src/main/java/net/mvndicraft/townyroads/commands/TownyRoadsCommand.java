@@ -347,6 +347,21 @@ public class TownyRoadsCommand extends BaseCommand {
             if (enabled) {
                 Messaging.sendSuccess(commandSender, Component.translatable("success_claim_switch_enabled",
                         Argument.component("road", Component.text(road.getName()))));
+                ChunkCoord currentChunk = ChunkCoord.from(player.getLocation());
+                if (TownyRoadsPlugin.getInstance().getRoadManager().getRoadAt(currentChunk) == null
+                        && com.palmergames.bukkit.towny.TownyAPI.getInstance().getTown(currentChunk.toLocation()) == null) {
+                    if (TownyRoadsPlugin.getInstance().getRoadManager().claimRoad(road, currentChunk, player)) {
+                        Messaging.sendSuccess(commandSender, Component.translatable("success_auto_claim",
+                                Argument.component("road", Component.text(road.getName())),
+                                Argument.component("current", Component.text(road.chunksCoordsSize())),
+                                Argument.component("max", Component.text(road.maxChunksCoordsSize()))));
+                    }
+                    if (!road.canClaimMore()) {
+                        TownyRoadsPlugin.getInstance().getClaimSwitchManager().disable(player.getUniqueId());
+                        Messaging.sendError(commandSender, Component.translatable("err_claim_switch_maxed",
+                                Argument.component("road", Component.text(road.getName()))));
+                    }
+                }
             } else {
                 Messaging.sendSuccess(commandSender, Component.translatable("success_claim_switch_disabled"));
             }

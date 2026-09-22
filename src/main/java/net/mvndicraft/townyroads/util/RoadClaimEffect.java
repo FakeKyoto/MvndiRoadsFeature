@@ -31,7 +31,7 @@ public final class RoadClaimEffect {
         int blockZ = chunkZ << 4;
         int y = player.getLocation().getBlockY();
 
-        TownyRoadsPlugin.info("RoadClaimEffect: spawning at blockX=" + blockX
+        TownyRoadsPlugin.debug("RoadClaimEffect: spawning at blockX=" + blockX
             + " blockZ=" + blockZ + " y=" + y + " color=" + color);
 
         new BukkitRunnable() {

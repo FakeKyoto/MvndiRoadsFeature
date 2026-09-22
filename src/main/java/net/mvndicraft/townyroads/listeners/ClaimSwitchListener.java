@@ -34,6 +34,7 @@ public class ClaimSwitchListener implements Listener {
 
         Road road = findNearestMemberRoad(player, to);
         if (road == null || road.isBlocked()) {
+            disableAndNotifyNoRoad(player);
             return;
         }
 
@@ -43,6 +44,7 @@ public class ClaimSwitchListener implements Listener {
         }
 
         if (!TownyRoadsPlugin.getInstance().getRoadManager().claimRoad(road, to, player)) {
+            disableAndNotifyNoRoad(player);
             return;
         }
 
@@ -70,5 +72,10 @@ public class ClaimSwitchListener implements Listener {
         TownyRoadsPlugin.getInstance().getClaimSwitchManager().disable(player.getUniqueId());
         Messaging.sendError(player, Component.translatable("err_claim_switch_maxed",
                 Argument.component("road", Component.text(road.getName()))));
+    }
+
+    private void disableAndNotifyNoRoad(Player player) {
+        TownyRoadsPlugin.getInstance().getClaimSwitchManager().disable(player.getUniqueId());
+        Messaging.sendError(player, Component.translatable("err_claim_switch_no_road"));
     }
 }

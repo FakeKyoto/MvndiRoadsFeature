@@ -62,6 +62,7 @@ success_claim_switch_disabled: "Auto-claim disabled."
 success_auto_claim: "Auto-claimed chunk for road <road> (<current>/<max>)."
 
 err_claim_switch_maxed: "Road <road> has maxed out its chunks. Auto-claim disabled."
+err_claim_switch_no_road: "Auto-claim disabled. No road found near this chunk."
 err_claim_switch_not_near_road: "You must be standing in or near the road <road> to enable auto-claim."
 
 info_road_need_to_be_revalidated: "<road> need to be validated again."

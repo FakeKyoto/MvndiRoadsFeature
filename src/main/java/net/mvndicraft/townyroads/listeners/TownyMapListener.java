@@ -21,15 +21,28 @@ public class TownyMapListener implements Listener {
         Road road = TownyRoadsPlugin.getInstance().getRoadManager().getRoadAt(chunkCoord);
         if (road == null) return;
 
-        if (road.isValid()) {
-            event.setMapSymbol("=");
+        String symbol;
+        NamedTextColor color;
+        String status;
+
+        if (road.isBlocked()) {
+            symbol = "X";
+            color = NamedTextColor.DARK_PURPLE;
+            status = "blocked";
+        } else if (road.isValid()) {
+            symbol = "=";
+            color = NamedTextColor.GOLD;
+            status = "validated";
         } else {
-            event.setMapSymbol("~");
+            symbol = "~";
+            color = NamedTextColor.DARK_RED;
+            status = "un-validated";
         }
 
+        event.setMapSymbol(symbol);
         event.setHoverText(
-            Component.text(road.getName(), road.isValid() ? NamedTextColor.GOLD : NamedTextColor.DARK_RED)
-                .append(Component.text(" (" + (road.isValid() ? "validated" : "un-validated") + ")", NamedTextColor.GRAY))
+            Component.text(road.getName(), color)
+                .append(Component.text(" (" + status + ")", NamedTextColor.GRAY))
         );
     }
 }

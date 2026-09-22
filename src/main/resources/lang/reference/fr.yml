@@ -62,6 +62,7 @@ success_claim_switch_disabled: "Revendication automatique désactivée."
 success_auto_claim: "Chunk revendiqué automatiquement pour la route <road> (<current>/<max>)."
 
 err_claim_switch_maxed: "La route <road> a atteint son maximum de chunks. Revendication automatique désactivée."
+err_claim_switch_no_road: "Auto-claim désactivé. Aucune route trouvée près de ce chunk."
 err_claim_switch_not_near_road: "Vous devez être sur ou près de la route <road> pour activer la revendication automatique."
 
 info_road_need_to_be_revalidated: "<road> doit être validée à nouveau."
